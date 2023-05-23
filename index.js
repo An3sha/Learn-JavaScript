@@ -1,4 +1,5 @@
 //Generic code
+
 // const radius = [2, 3, 4, 5];
 // const areaCircle = function (radius) {
 //     const area = [];
@@ -27,7 +28,8 @@
 // console.log(hello)
 
 
-//Higher order functions and arrays - Traversy Media
+//                                                      Higher order functions and arrays
+//                                                     _________________________________________
 
 const companies = [
     { name: "One", category: "Finance", start: 1981, end: 2003 },
@@ -53,7 +55,7 @@ const ages = [33, 12, 20, 16, 5, 54, 21, 44, 61, 13, 15, 45, 25, 64, 32];
 //     console.log(company);
 // })
 
-//FILTER
+//                                                                 FILTER
 
 //using for loop
 // let canDrink = []
@@ -121,7 +123,7 @@ const ages = [33, 12, 20, 16, 5, 54, 21, 44, 61, 13, 15, 45, 25, 64, 32];
 // console.log(output);
 
 
-//MAP
+//                                                                      MAP
 
 //create array of company names
 
@@ -141,7 +143,7 @@ const ages = [33, 12, 20, 16, 5, 54, 21, 44, 61, 13, 15, 45, 25, 64, 32];
 // const ageTest = ages.map(x => Math.sqrt(x)).map(x => x * 2);
 // console.log(ageTest);
 
-//SORT
+//                                                                      SORT
 // const sortComp = companies.sort(function (c1, c2) {
 //     if (c1.start > c2.start)
 //         return 1;
@@ -157,7 +159,7 @@ const ages = [33, 12, 20, 16, 5, 54, 21, 44, 61, 13, 15, 45, 25, 64, 32];
 // const sortAges = ages.sort((a,b) => b-a); //descending order
 // conso  le.log(sortAges);
 
-//REDUCE
+//                                                                      REDUCE
 
 //sum of ages using for loop
 
