@@ -159,7 +159,7 @@ const ages = [33, 12, 20, 16, 5, 54, 21, 44, 61, 13, 15, 45, 25, 64, 32];
 // const sortAges = ages.sort((a,b) => b-a); //descending order
 // conso  le.log(sortAges);
 
-//                                                                      REDUCE
+//                                                                      REDUCE (return a single value)(takes 2 parameters)
 
 //sum of ages using for loop
 
