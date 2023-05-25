@@ -29,22 +29,23 @@ createPost = (post) => {
   });
 };
 
-// createPost({ title: 'Post Three', body: 'This is a post three' }).then(getPost).catch(err => console.log(err));
-// instead of .then.then we can use promise all
+//Async/Await
 
-//promise.all
-// const promise1 = Promise.resolve("Hello World");
-// const promise2 = 10;
-// const promise3 = new Promise((resolve, reject) =>
-//   setTimeout(resolve, 2000, "Goodbye")
-// );
+// async function init() {
+//   await createPost({ title: "Post Three", body: "This is a post three" });
+//   getPost();
+// }
 
-// with fetch
+// init();
 
-// const promise4 = fetch("https://jsonplaceholder.typicode.com/users").then(
-//   (res) => res.json()
-// );
+// Async/Await with fetch
 
-// Promise.all([promise1, promise2, promise3, promise4]).then((values) =>
-//   console.log(values)
-// );
+async function fetchUsers() {
+  const res = await fetch("https://jsonplaceholder.typicode.com/users");
+
+  const data = await res.json();
+
+  console.log(data);
+}
+
+fetchUsers();
