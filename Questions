@@ -148,3 +148,103 @@ Basic Questions:
     Example:
               console.log(y); // ReferenceError: Cannot access 'y' before initialization
               let y = 10;
+
+Intermediate Questions:
+
+1. Can you explain the difference between hoisting of var and let/const declarations?
+
+  var: Declarations are hoisted to the top of their scope and initialized with undefined. 
+  This allows the variable to be accessed before its declaration with an undefined value.
+  let/const: Declarations are hoisted to the top of their block scope but not initialized. 
+  They exist in the temporal dead zone until the declaration is encountered, leading to a ReferenceError if accessed early.
+
+2. What is the temporal dead zone (TDZ), and how does it relate to hoisting?
+
+  The temporal dead zone (TDZ) is the period between the start of the block scope and the point where the 
+  let or const variable is declared. During this time, accessing the variable results in a ReferenceError because the
+  variable is in an uninitialized state and cannot be accessed.
+
+3. How does hoisting affect function expressions and arrow functions?
+
+  Function expressions and arrow functions are not fully hoisted like function declarations. 
+  Only the variable declaration (var, let, or const) is hoisted, not the function assignment. 
+  Attempting to call the function before the assignment will result in a TypeError or ReferenceError.
+  
+      Example:
+              console.log(foo); // undefined (for var) or ReferenceError (for let/const)
+              var foo = function() { console.log("Function expression"); };
+              
+              foo(); // Outputs "Function expression"
+
+4. Can you give an example where hoisting can lead to unexpected results in JavaScript code?
+
+  An example of unexpected results due to hoisting is when you have a variable declared with var that is used before its initialization.
+  
+      Example:
+              console.log(a); // undefined
+              var a = 3;
+  
+  Here, a is hoisted and initialized with undefined, so the first console.log outputs undefined rather than throwing an error.
+
+5. What will be the output of the following code and why?
+
+    console.log(foo);
+    var foo = 1;
+    function foo() {}
+    console.log(foo);
+    
+    
+    Output:
+    [Function: foo]
+    1
+    
+    Explanation: The function declaration function foo() {} is hoisted completely, so foo is initially a function. 
+    When var foo = 1; is executed, it overwrites foo with the value 1. Hence, the first console.log outputs the 
+    function (because of hoisting), and the second console.log outputs 1 after the assignment.
+
+Advanced Questions:
+
+1. How does hoisting interact with block-scoped variables inside functions?
+
+  Block-scoped variables (let and const) are hoisted to the top of their block scope, but they are not initialized until the
+  declaration is reached. They remain in the TDZ until then. Inside functions, this means you can only access them after their declaration.
+
+2. Can you explain hoisting behavior with variables declared inside blocks (e.g., within an if statement)?
+
+  Variables declared with var inside a block (like if statements) are hoisted to the function or global scope, not the block itself. 
+  In contrast, let and const are hoisted to the block scope and are subject to the TDZ within that block.
+  
+    Example:
+            if (true) {
+              var a = 1;
+              let b = 2;
+            }
+            console.log(a); // 1 (var is hoisted to the function/global scope)
+            console.log(b); // ReferenceError (b is block-scoped and in TDZ outside the block)
+
+3. How does JavaScript handle hoisting in nested functions?
+
+  In nested functions, each function's declarations are hoisted within their respective scopes. The inner function’s declarations 
+  are hoisted within the inner function’s scope, and outer function declarations are hoisted in their scope.
+  
+    Example:
+              function outer() {
+                console.log(inner); // undefined (due to hoisting of var declaration)
+                var inner = function() { console.log("Inner function"); };
+                inner(); // Outputs "Inner function"
+              }
+              outer();
+
+4. What is the role of the execution context in relation to hoisting?
+
+  The execution context is created during the compilation phase and is responsible for managing the scope of variable and function declarations. 
+  During this phase, declarations are hoisted to the top of their respective execution contexts. Each execution context has its own hoisting mechanism, 
+  managing its own variables and functions.
+
+5. How does the hoisting behavior differ in different environments, such as browsers and Node.js?
+
+  Hoisting behavior in terms of variable and function declarations is consistent across different JavaScript environments like browsers and Node.js.
+  However, there may be differences in how these environments handle the global scope and module scope.
+  For example, Node.js modules use CommonJS module system, where variables and functions are not hoisted across module boundaries, 
+  while in the browser, global variables and functions are hoisted in the global scope.
+
