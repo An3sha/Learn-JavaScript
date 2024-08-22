@@ -94,3 +94,57 @@ Advanced Questions:
   Event Loop: The event loop monitors the call stack. If the call stack is empty, it pulls the first task from the callback queue and pushes it onto the call stack for execution.
 
   Call Stack Execution: The callback function is executed on the call stack, completing the lifecycle of the asynchronous operation.
+
+
+                                                          HOISTING
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Basic Questions:
+
+1. What is hoisting in JavaScript?
+
+  Hoisting is a JavaScript behavior where variable and function declarations are moved to the top of their 
+  containing scope (global or function scope) during the compilation phase, before the code is executed. 
+  This means that declarations are processed before any code is executed, allowing variables and functions 
+  to be used before they are actually declared in the code.
+
+2. How does hoisting affect function declarations?
+
+  Function declarations are fully hoisted. Both the function's name and body are moved to the top of their scope.
+  This means you can call the function before its declaration in the code because the entire function is available throughout its scope.
+
+    Example:
+              greet(); // Works fine, outputs "Hello!"
+              
+              function greet() {
+                console.log("Hello!");
+              }
+
+3. How does hoisting affect variables declared with var?
+
+  Variables declared with var are hoisted to the top of their scope, but only the declaration is hoisted, not the initialization. 
+  The variable is initialized with undefined until the assignment is reached.
+    
+    Example:
+              console.log(x); // undefined
+              var x = 10;
+              console.log(x); // 10
+
+4. What happens when you access a variable declared with var before its declaration?
+
+  When you access a var variable before its declaration, the value is undefined because the declaration is 
+  hoisted but not the initialization. The variable exists, but it hasn’t been assigned a value yet.
+  
+    Example:
+                console.log(x); // undefined
+                var x = 5;
+
+5. How does hoisting work with let and const?
+
+  let and const declarations are hoisted to the top of their block scope (inside functions, if blocks, etc.), 
+  but they are not initialized. They remain in a temporal dead zone (TDZ) from the start of the block until their
+  declaration is encountered. Accessing these variables before their declaration results in a ReferenceError.
+  
+    Example:
+              console.log(y); // ReferenceError: Cannot access 'y' before initialization
+              let y = 10;
