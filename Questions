@@ -1,0 +1,96 @@
+                                                           CALL STACK
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Basic Questions:
+
+1. What is the JavaScript call stack?
+
+  The JavaScript call stack is a mechanism for managing the execution of function calls. When a function is invoked, 
+  it is placed on top of the call stack. The engine executes the function, and when it's finished, it is removed from the stack. 
+  This ensures that the functions are executed in the correct order.
+
+2. How does the call stack work in JavaScript?
+
+  The call stack follows the LIFO (Last In, First Out) principle. When a function is called, it gets pushed onto the top of the stack. 
+  The engine starts executing the function. If the function calls another function, that new function is also pushed onto the stack. 
+  Once a function finishes execution, it gets popped off the stack, and control returns to the previous function.
+
+3. What happens when a function is called in JavaScript in terms of the call stack?
+
+  When a function is called, a new execution context is created for that function. This execution context is placed on the top of the call stack. 
+  The function executes, and once it completes, its execution context is removed (popped off) from the stack, and the control goes back to the previous execution context.
+
+4. Can you explain what happens when a function calls itself recursively?
+
+  In recursion, each recursive function call creates a new execution context that is pushed onto the call stack.
+  The stack grows with each recursive call until the base case is reached, where the recursive calls start to unwind, and the execution contexts are popped off the stack.
+
+5. What is a stack overflow, and how does it occur in the call stack?
+
+  A stack overflow occurs when the call stack exceeds its limit. This typically happens in cases of excessive recursion or when a function calls itself infinitely without a base case. 
+  The browser or environment limits the size of the stack, and exceeding this limit results in a stack overflow error.
+
+Intermediate Questions:
+
+1. How does the JavaScript call stack handle asynchronous operations like setTimeout or fetch?
+
+  Asynchronous operations are not executed in the call stack directly. When an asynchronous function (like setTimeout or fetch) is called, 
+  it is offloaded to the browser's Web APIs (or Node.js runtime). The call stack continues executing other code, and once the asynchronous operation completes, 
+  the callback or promise is placed in the event queue. The event loop then pushes this callback back into the call stack for execution when the stack is empty.
+
+2. What happens when a function in the call stack encounters an error? How is this handled?
+
+  When a function in the call stack encounters an error, the error propagates up the stack to the point where it is handled (using a try...catch block, for example). 
+  If the error is not caught, it continues to bubble up the stack until it reaches the global context. If the error is still unhandled,
+  it usually results in a crash or termination of the script.
+
+3. Explain the difference between the call stack and the event loop in JavaScript.
+
+  The call stack is responsible for keeping track of function calls and execution order, while the event loop manages asynchronous tasks.
+  The event loop monitors the call stack and the event queue. When the stack is empty, the event loop pushes the first task in the queue
+  onto the call stack for execution, thus ensuring asynchronous operations are executed when the synchronous code finishes.
+
+4. How does the call stack interact with the execution context in JavaScript?
+
+  Every time a function is invoked, an execution context is created and placed on the call stack. The execution context contains details 
+  like variable environments, this binding, and the current execution phase. The topmost execution context on the call stack is the one being executed at any given moment.
+
+Advanced Questions:
+
+1. What role does the execution context play in relation to the call stack?
+
+  The execution context is the environment in which a function executes. Each time a function is called,
+  a new execution context is created and pushed onto the call stack. This context contains details like the function’s scope, variables, and the value of this.
+  As the function completes, its execution context is removed from the stack.
+
+2. How does tail call optimization affect the call stack in modern JavaScript engines?
+
+  Tail call optimization (TCO) allows JavaScript engines to optimize recursive function calls, 
+  specifically tail calls (the last operation in a function). With TCO, instead of adding a new frame to the call stack for each tail call, 
+  the engine reuses the current stack frame. This prevents stack overflows and reduces memory consumption in certain recursive functions.
+
+3. Explain how stack frames are used within the call stack. How does this affect memory management?
+
+  A stack frame is a portion of the call stack that contains information related to the function call, such as the function's parameters, local variables, and return address. 
+  Every time a function is called, a new stack frame is added. Stack frames are temporary, meaning they are created when the function
+  is invoked and destroyed when the function completes. This helps with efficient memory management since unused memory is reclaimed after the function finishes.
+
+4. Describe how the call stack behaves during recursive calls in a deeply nested function.
+
+  During deeply nested recursive calls, each call adds a new execution context to the call stack. If the recursion is deep enough 
+  (for example, due to an improperly defined base case), it can lead to a stack overflow error because the stack has a finite size.
+  Properly handled recursion will eventually unwind the stack as each recursive call returns, reducing the stack size.
+
+5. Can you walk through the lifecycle of an asynchronous operation in JavaScript, from the call stack to the event loop and callback queue?
+
+  Call Stack: When an asynchronous function (e.g., fetch, setTimeout) is invoked, the call is placed on the call stack.
+
+  Web API: The asynchronous task is handed off to the Web API (in browsers) or a similar environment (in Node.js) to be processed outside the call stack.
+
+  Call Stack Continues: The call stack moves on to execute other code while the asynchronous task runs in the background.
+
+  Task Completion: Once the asynchronous operation finishes, the result (callback or promise) is placed into the callback queue.
+
+  Event Loop: The event loop monitors the call stack. If the call stack is empty, it pulls the first task from the callback queue and pushes it onto the call stack for execution.
+
+  Call Stack Execution: The callback function is executed on the call stack, completing the lifecycle of the asynchronous operation.
