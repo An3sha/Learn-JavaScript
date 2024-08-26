@@ -626,5 +626,303 @@ console.log(greeter()); // Output: Hi!
 
 
 
+                                                                          CALLBACK FUNCTIONS
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+1. What is a callback function in JavaScript?
+
+  A callback function is a function that is passed as an argument to another function and is executed after some operation in the calling function is complete.
+
+2. Can you give an example of a callback function in JavaScript?
+
+            function greet(name) {
+                console.log(`Hello, ${name}`);
+            }
+            
+            function processInput(callback) {
+                const name = "Alice";
+                callback(name);
+            }
+            
+            processInput(greet);  // Output: Hello, Alice
+
+3. Why are callback functions important in JavaScript?
+
+  Callback functions are crucial for handling asynchronous tasks, such as network requests, timers, or event handling. They allow you to wait for a task to complete
+  before executing the next piece of code.
+
+4. What is the difference between synchronous and asynchronous callbacks?
+
+  Synchronous callbacks are executed immediately as part of the execution of the function they are passed to.
+  Asynchronous callbacks are executed after an event occurs or when the operation completes (e.g., when fetching data from a server).
+
+  // Synchronous callback
+                [1, 2, 3].forEach(function(num) {
+                    console.log(num); // Outputs 1, 2, 3 immediately
+                });
+
+  // Asynchronous callback
+            setTimeout(function() {
+                console.log("Async callback!"); // Outputs after 1 second
+            }, 1000);
+
+5. How would you handle errors in a callback function?
+
+  Errors in callbacks can be handled by passing an error argument to the callback. If an error occurs, the callback function can check for the presence of an error and 
+  handle it accordingly.
+
+              function fetchData(callback) {
+                  const error = false;
+                  const data = { name: "Alice", age: 25 };
+                  
+                  if (error) {
+                      callback("Error occurred", null);
+                  } else {
+                      callback(null, data);
+                  }
+              }
+              
+              fetchData(function(err, data) {
+                  if (err) {
+                      console.log(err);
+                  } else {
+                      console.log(data);
+                  }
+              });
+
+6. What are some common problems with callback functions? How can you overcome them?
+
+  Common problems with callbacks include callback hell (deeply nested callbacks making code difficult to read and maintain) and error handling across multiple asynchronous steps. 
+  To overcome these, you can use promises or async/await to manage asynchronous code more cleanly.
+
+7. What is "callback hell," and how can it be avoided?
+
+  Callback hell occurs when you have many nested callback functions, making the code difficult to read and maintain. It can be avoided by breaking down the code into smaller functions,
+  using promises, or utilizing async/await.
+
+  Example of callback hell:
+
+            setTimeout(function() {
+                console.log("First task");
+                setTimeout(function() {
+                    console.log("Second task");
+                    setTimeout(function() {
+                        console.log("Third task");
+                    }, 1000);
+                }, 1000);
+            }, 1000);
+
+  Avoiding callback hell with promises:
+
+          new Promise((resolve) => setTimeout(() => resolve("First task"), 1000))
+              .then(console.log)
+              .then(() => new Promise((resolve) => setTimeout(() => resolve("Second task"), 1000)))
+              .then(console.log)
+              .then(() => new Promise((resolve) => setTimeout(() => resolve("Third task"), 1000)))
+              .then(console.log);
+
+8. What is the difference between callbacks and promises?
+
+  Callbacks are functions passed to other functions to be executed later, once the task is complete.
+  Promises represent the eventual completion (or failure) of an asynchronous operation and its resulting value. Promises provide better readability and help avoid callback hell.
+
+9. How would you convert a function that uses callbacks into one that uses promises?
+
+  You can wrap the callback-based function in a promise by using the Promise constructor. Here's an example:
+
+          function fetchData(callback) {
+              setTimeout(() => {
+                  callback(null, { name: "Alice", age: 25 });
+              }, 1000);
+          }
+
+  // Convert to promise-based
+          function fetchDataPromise() {
+              return new Promise((resolve, reject) => {
+                  fetchData((err, data) => {
+                      if (err) {
+                          reject(err);
+                      } else {
+                          resolve(data);
+                      }
+                  });
+              });
+          }
+          
+          fetchDataPromise()
+              .then((data) => console.log(data))
+              .catch((err) => console.log(err));
+
+10. Can you explain the differences between a higher-order function and a callback function?
+
+  A callback function is a function passed as an argument to another function and executed at a certain point. A higher-order function is a function 
+  that accepts other functions as arguments or returns a function. Callback functions can be used within higher-order functions, but the two are distinct concepts.
+
+11. How are event listeners and callbacks related?
+
+  Event listeners in JavaScript use callback functions to define the behavior that occurs when an event happens (e.g., when a button is clicked).
+  The callback function is triggered when the specified event occurs.
+
+          const button = document.querySelector("button");
+          
+          button.addEventListener("click", function() {
+              console.log("Button clicked!");
+          });
+
+12. What is an asynchronous callback? How is it different from a synchronous callback?
+
+  An asynchronous callback is executed after an asynchronous operation completes, like an API request or timer.
+  A synchronous callback is executed immediately within the same operation, without waiting for any background tasks.
+
+
+
+                                                                           EVENT LISTENERS
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1. What is an event listener in JavaScript?
+
+  An event listener is a function that waits for a specific event (such as a click, keypress, or form submission) to occur on an element. Once the event occurs, 
+  the callback function associated with the listener is executed.
+
+2. What is the difference between onclick and addEventListener()?
+
+  onclick is an HTML attribute or a DOM property that can only attach one event handler at a time. If another handler is assigned, it overwrites the previous one.
+  addEventListener() allows attaching multiple event listeners of the same type to an element without overriding existing listeners.
+  
+  // Using onclick (only one listener allowed)
+  button.onclick = function() { alert('Clicked 1'); };
+  button.onclick = function() { alert('Clicked 2'); }; // This overwrites the first
+  
+  // Using addEventListener (multiple listeners allowed)
+  button.addEventListener('click', function() { alert('Clicked 1'); });
+  button.addEventListener('click', function() { alert('Clicked 2'); });
+
+3. How would you remove an event listener?
+  
+  Event listeners are removed using the removeEventListener() method. The function passed to removeEventListener() must be the exact same reference that was passed to addEventListener().
+  
+            function handleClick() {
+                alert('Button clicked!');
+            }
+            
+            button.addEventListener('click', handleClick);
+            button.removeEventListener('click', handleClick); // Removes the listener
+
+4. What is the third argument in addEventListener() used for?
+
+  The third argument, useCapture, is a boolean that controls the event's phase. If true, the event listener is set during the capturing phase. 
+  If false, the listener is set during the bubbling phase (default).
+  
+  
+  element.addEventListener('click', callback, true);  // Capturing phase
+  element.addEventListener('click', callback, false); // Bubbling phase (default)
+
+5. What are the capturing and bubbling phases in event propagation?
+
+  Capturing phase: The event travels from the document root down to the target element.
+  Bubbling phase: The event travels back up from the target element to the document root.
+  Event listeners can be set for either phase using the third argument in addEventListener().
+  
+  
+  // Example of bubbling phase
+          parentElement.addEventListener('click', () => console.log('Parent clicked'));
+          childElement.addEventListener('click', () => console.log('Child clicked'));
+
+6. Explain event.stopPropagation() and event.preventDefault() with examples.
+
+  stopPropagation() prevents the event from propagating (bubbling or capturing) to ancestor elements.
+  preventDefault() prevents the default action associated with the event (e.g., preventing a form submission).
+  
+      // stopPropagation example
+      childElement.addEventListener('click', (event) => {
+          event.stopPropagation();  // Prevents the event from bubbling to parentElement
+      });
+      
+      // preventDefault example
+      formElement.addEventListener('submit', (event) => {
+          event.preventDefault();  // Prevents the form from being submitted
+      });
+
+7. How can you handle multiple events with a single event listener?
+
+  Multiple events can be handled with a single listener by either checking the event type or using an array of event types with a loop.
+  
+    // Example 1: Checking event type
+    element.addEventListener('click', (event) => {
+        if (event.type === 'click') {
+            console.log('Element clicked');
+        } else if (event.type === 'mouseover') {
+            console.log('Mouse over element');
+        }
+    });
+    
+    // Example 2: Loop through event types
+    ['click', 'mouseover'].forEach((eventType) => {
+        element.addEventListener(eventType, () => console.log(eventType));
+    });
+
+8. How do you delegate events in JavaScript?
+
+  Event delegation is a technique where you attach a single event listener to a parent element and handle the event for its child elements.
+  This reduces the number of listeners and is useful when handling events for dynamically created elements.
+  Example:
+  
+      document.querySelector('ul').addEventListener('click', (event) => {
+          if (event.target.tagName === 'LI') {
+              console.log('List item clicked:', event.target.textContent);
+          }
+      });
+
+9. What happens if you attach an event listener to a dynamically added element?
+  
+  If an element is added to the DOM dynamically after the event listener was attached, it will not inherit the listener unless the event listener was 
+  attached using event delegation. To handle dynamically added elements, you should attach the listener to a common parent element.
+
+10. Can you attach an event listener to multiple elements at once?
+
+  You cannot directly attach an event listener to multiple elements, but you can loop through the elements and attach listeners to each individually.
+    
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach(button => {
+          button.addEventListener('click', () => {
+              console.log('Button clicked!');
+          });
+      });
+
+11. What are synthetic events in React, and how do they differ from native events?
+  
+  In React, synthetic events are cross-browser wrappers around the browser's native events. They provide consistent behavior across different browsers. 
+  Synthetic events work the same way as native events but are handled within the React framework.
+
+12. How does JavaScript handle event listeners for the same event type on the same element?
+
+  If you add multiple event listeners for the same event type on the same element using addEventListener(), all the listeners will be triggered in the order they were added. 
+  If you assign a function directly using onclick, only the most recent listener will be active (since it overwrites the previous ones).
+
+13. What is an anonymous function in the context of an event listener, and what are the implications?
+
+  An anonymous function is a function without a name that is directly passed to addEventListener(). The downside of using anonymous functions is that they cannot be removed later 
+  using removeEventListener() since they don’t have a reference.
+  
+      button.addEventListener('click', function() {
+          console.log('Anonymous function');
+      });
+  
+  // This cannot be removed with removeEventListener
+
+14. Can event listeners be applied to non-DOM elements?
+
+  Yes, event listeners can be applied to non-DOM objects like window, document, and even certain objects in Node.js like EventEmitter.
+
+15. What is the once option in addEventListener()?
+
+  The once option in addEventListener() ensures that the event listener is called at most once after being added. Once the event has been triggered, the listener is automatically removed.
+  
+    button.addEventListener('click', () => {
+        console.log('This will run only once!');
+    }, { once: true });
+      
+
 
 
