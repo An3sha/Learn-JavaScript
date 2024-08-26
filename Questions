@@ -508,6 +508,121 @@ Answer:
   Answer - 7, 900
 
 
+                                                                        FIRST CLASS FUNCTIONS
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1. What are first-class functions in JavaScript?
+
+  First-class functions are functions that are treated as first-class citizens in a programming language. This means that functions can be:
+  
+   - Assigned to variables: You can store functions in variables like any other value.
+   - Passed as arguments: Functions can be passed as arguments to other functions.
+   - Returned from other functions: Functions can be returned as values from other functions.
+   - Stored in data structures: Functions can be stored in arrays, objects, or other data structures.
+  
+  In languages that support first-class functions, functions are treated as any other value (such as numbers, strings, or objects), giving you flexibility in how you use and manipulate them.
+  
+  Example (JavaScript):
+  
+                function sayHello() {
+                  return "Hello!";
+                }
+                
+                // Assigning a function to a variable
+                const greet = sayHello;
+                console.log(greet()); // Output: Hello!
+                
+                // Passing a function as an argument
+                function callFunction(fn) {
+                  return fn();
+                }
+                console.log(callFunction(sayHello)); // Output: Hello!
+                
+                // Returning a function from another function
+                function createGreeter() {
+                  return function() {
+                    return "Hi!";
+                  };
+}
+const greeter = createGreeter();
+console.log(greeter()); // Output: Hi!
+
+
+2. How would you pass a function as an argument to another function? Can you give an example?
+                  
+                  function greet(name) {
+                      return `Hello, ${name}`;
+                  }
+                  
+                  function callGreet(fn, name) {
+                      return fn(name);
+                  }
+                  
+                  console.log(callGreet(greet, "Bob")); // Output: Hello, Bob
+
+3. What does it mean for a function to return another function? Can you give an example?
+
+            function outerFunction() {
+                return function() {
+                    console.log("Inner function!");
+                };
+            }
+            
+            const inner = outerFunction();
+            inner(); // Output: Inner function!
+
+4. Can you explain currying and how it relates to first-class functions?
+
+  Currying is a technique where a function is transformed into a series of functions that each take a single argument. Since functions are first-class,
+  you can return functions from other functions to achieve currying.
+  
+          function multiply(a) {
+              return function(b) {
+                  return a * b;
+              };
+          }
+          
+          const double = multiply(2);
+          console.log(double(5)); // Output: 10
+
+5. What is a callback function, and how does it relate to first-class functions?
+
+  A callback function is a function passed as an argument to another function, which is then invoked inside that function. This is possible because functions are first-class.
+  
+              function doSomething(callback) {
+                  callback();
+              }
+              
+              doSomething(function() {
+                  console.log("Callback executed!");
+              });
+
+6. How do first-class functions enable the use of asynchronous patterns like setTimeout and Promise.then?
+
+  Functions can be passed as arguments to setTimeout, Promise.then, and other asynchronous functions. 
+  These asynchronous patterns rely on first-class functions to delay execution until a certain event or time.
+  
+            setTimeout(function() {
+                console.log("Executed after 1 second!");
+            }, 1000);
+            
+            const promise = new Promise((resolve) => resolve("Success!"));
+            promise.then(function(result) {
+                console.log(result); // Output: Success!
+            });
+
+
+7. How would you explain the concept of function composition using first-class functions?
+  
+  Function composition is the process of combining multiple functions to produce a new function. Since functions are first-class, you can pass them to other functions and return them to create a chain of function calls.
+  
+          const compose = (f, g) => (x) => f(g(x));
+          const add2 = (x) => x + 2;
+          const multiply3 = (x) => x * 3;
+          
+          const addAndMultiply = compose(multiply3, add2);
+          console.log(addAndMultiply(5)); // Output: 21 (5 + 2 = 7, 7 * 3 = 21)
+
 
 
 
