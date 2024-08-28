@@ -1,0 +1,181 @@
+                                                              Asynchronous JavaScript & EVENT LOOP 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1. What is the Event Loop in JavaScript?
+
+  The Event Loop is a mechanism in JavaScript that allows asynchronous operations to be executed. JavaScript is single-threaded, meaning it can only execute one task at a time. 
+  The Event Loop continuously checks the call stack and the task queue. When the call stack is empty, the Event Loop picks the first task in the queue and pushes it onto the stack 
+  for execution.
+
+2. Explain the concept of asynchronous programming in JavaScript.
+
+  Asynchronous programming allows JavaScript to handle long-running operations, such as network requests or timers, without blocking the main thread. 
+  Instead of waiting for a task to complete, JavaScript continues executing the next tasks, and once the asynchronous operation is complete, 
+  a callback or a promise is used to handle the result.
+
+3. What is the Call Stack, and how does it relate to asynchronous JavaScript?
+
+  The Call Stack is a data structure that records where the program is in its execution. Functions are placed on top of the stack when they are called, 
+  and removed when they finish executing. In asynchronous JavaScript, when an asynchronous task is initiated, it is removed from the call stack and placed in the Web APIs or Node APIs.
+  Once it completes, the corresponding callback is pushed back into the task queue, which the Event Loop eventually moves back to the call stack.
+
+4. What is a Promise, and how does it work?
+
+  A Promise represents an eventual completion (or failure) of an asynchronous operation and its resulting value. It has three states:
+  
+  pending: The initial state.
+  
+  fulfilled: The operation was completed successfully.
+  
+  rejected: The operation failed. Promises allow you to chain .then(), .catch(), and .finally() to handle results or errors when the asynchronous operation completes.
+
+5. Explain the difference between setTimeout and setInterval.
+
+  setTimeout: Executes a callback function after a specified delay (in milliseconds). The function runs once.
+  
+  setInterval: Executes a callback function repeatedly at specified intervals (in milliseconds), until clearInterval() is called.
+  
+  // Example: A simple timer that logs the time every second
+                let count = 0;
+                
+                const intervalId = setInterval(() => {
+                  count += 1;
+                  console.log(`Timer: ${count} seconds`);
+                
+                  // Stop the interval after 5 seconds
+                  if (count >= 5) {
+                    clearInterval(intervalId);
+                    console.log("Timer stopped");
+                  }
+                }, 1000);  // Runs every 1000 milliseconds (1 second)
+
+6. How do setTimeout and setInterval work in the Event Loop?
+  
+  Both setTimeout and setInterval are browser or Node.js APIs. They initiate a timer, and once the timer finishes, the associated callback is placed in the task queue. 
+  When the call stack is empty, the Event Loop pushes the callback onto the stack to be executed.
+
+7. What are microtasks and macrotasks in JavaScript, and how are they scheduled in the Event Loop?
+
+  Microtasks: These are tasks that are queued to be executed immediately after the current task completes, before rendering or other macrotasks. 
+  Examples include promises and queueMicrotask().
+  
+  Macrotasks: These include setTimeout, setInterval, I/O tasks, etc., and are executed after microtasks are complete.
+  
+  The Event Loop always prioritizes microtasks over macrotasks. After executing a piece of code, it will first run all pending microtasks before starting on the next macrotask.
+
+8. What are the different phases of the Event Loop?
+
+  The Event Loop consists of multiple phases:
+  
+    Timers Phase: Executes callbacks scheduled by setTimeout and setInterval.
+    
+    Pending Callbacks: Executes callbacks for some system operations.
+    
+    Idle, Prepare Phase: Internal operations.
+    
+    Poll Phase: Retrieves new I/O events and executes them.
+    
+    Check Phase: Executes setImmediate() callbacks.
+    
+    Close Callbacks: Executes closed events like socket.on('close').
+
+9. What is the difference between synchronous and asynchronous code execution in JavaScript?
+
+  Synchronous: Code is executed line by line. Each operation must complete before the next one starts, potentially blocking the main thread.
+  
+  Asynchronous: Allows code to initiate an operation and continue without waiting for it to finish. The result is handled by callbacks, promises, or async/await.
+
+10. How does JavaScript handle asynchronous operations like API calls, file I/O, or timers?
+
+  JavaScript offloads asynchronous operations to Web APIs (in browsers) or Node.js APIs (in Node.js). 
+  Once the operation completes, the corresponding callback or promise is placed in the task queue, which the Event Loop eventually processes.
+
+11. Explain how the Event Loop interacts with the browser APIs.
+
+  The browser provides APIs like setTimeout, DOM events, and fetch APIs. These APIs handle asynchronous tasks outside of the JavaScript engine. 
+  When these tasks complete, their callbacks are queued in the task queue, waiting for the Event Loop to push them to the call stack for execution.
+
+12. How do async and await work in JavaScript?
+  
+  async functions return a promise, and await pauses the execution of the function until the promise is resolved or rejected. 
+  While await pauses within the function, it doesn't block the main thread, allowing other code to continue executing.
+
+13. What happens if you await a non-Promise value?
+
+  If you await a non-promise value, JavaScript automatically wraps it in a resolved promise, allowing await to work seamlessly.
+
+14. How does error handling work with Promises and async/await?
+  
+  With Promises, errors are caught using .catch(). In async/await, you use try/catch blocks to handle errors. 
+  If a promise is rejected inside an async function, the catch block will catch the error.
+
+15. What are the differences between process.nextTick() and Promise.then() in Node.js?
+  
+  process.nextTick() queues the callback to be executed immediately after the current operation, before I/O events and timers. 
+  Promise.then() queues the callback as a microtask, which will be executed after the current operation but before macrotasks like timers.
+
+16. In what order do microtasks and macrotasks execute? Can you give an example?
+
+  Microtasks execute before the next macrotask is processed. For example:
+          
+          
+          setTimeout(() => console.log("macrotask"), 0);
+          Promise.resolve().then(() => console.log("microtask"));
+          
+          Output:
+          microtask
+          macrotask
+
+17. How do Promises, setTimeout, and async/await interact with the Event Loop?
+
+  Promises: Handled as microtasks.
+  
+  setTimeout: Handled as macrotasks.
+  
+  async/await: The await pauses function execution and the promise is handled as a microtask.
+  Microtasks are prioritized over macrotasks.
+
+18. What is the purpose of the queueMicrotask() method in JavaScript?
+
+  queueMicrotask() allows you to schedule a function to run after the current task is complete but before any macrotasks like timers are executed. 
+  It ensures high-priority execution of small asynchronous tasks.
+
+19. How does JavaScript’s single-threaded nature impact asynchronous programming?
+
+  Since JavaScript is single-threaded, it can't run multiple tasks at the same time.
+  Asynchronous programming allows JavaScript to initiate operations without blocking the main thread, enabling it to handle long-running tasks like network requests efficiently.
+
+20. Can you explain how the Event Loop works in Node.js vs. browsers?
+
+  The Event Loop works similarly in both environments but with different APIs. 
+  In browsers, the Event Loop interacts with DOM events, Web APIs, and timers. 
+  In Node.js, it handles I/O operations, timers, and process.nextTick() alongside setImmediate() and other Node-specific APIs.
+
+21. What is the role of the message queue in the Event Loop?
+
+  The message queue (or task queue) stores callbacks of completed asynchronous tasks. 
+  The Event Loop processes tasks in the queue, placing them on the call stack when it becomes empty.
+
+22. Can you explain how callback functions work in the context of the Event Loop?
+
+  Callbacks are passed to asynchronous operations, which are executed once the operation is complete. 
+  When the Event Loop detects that the call stack is empty, it picks a task from the task queue and executes its callback.
+
+23. What is the purpose of the Promise.resolve() and Promise.reject() methods?
+
+  Promise.resolve(): Returns a promise that is resolved with the given value.
+
+  Promise.reject(): Returns a promise that is rejected with the given reason.
+
+24. What is a race condition, and how does it relate to asynchronous code?
+
+  A race condition occurs when the outcome of a program depends on the unpredictable timing of asynchronous operations. 
+  In JavaScript, it often happens when multiple asynchronous tasks are competing to modify shared data without proper synchronization.
+
+25. How would you avoid callback hell in JavaScript?
+
+  Callback hell can be avoided by:
+  
+  Using Promises to chain asynchronous tasks.
+  Using async/await to make code more readable and linear.
+  Breaking complex callbacks into smaller, named functions.
